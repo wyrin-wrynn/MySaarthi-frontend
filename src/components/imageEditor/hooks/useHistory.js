@@ -1,6 +1,6 @@
 // components/imageEditor/hooks/useHistory.js
 import { useState } from 'react';
-import { isArraysEqual } from '../utils/isArraysEqual';
+import { isArraysEqual } from '../utils/isArrayEqual';
 
 export function useHistory(initialState) {
   const [elements, setElements] = useState(initialState);

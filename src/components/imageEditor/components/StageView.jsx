@@ -1,9 +1,12 @@
-// components/imageEditor/components/StageView.jsx
 import React, { useEffect, useState } from 'react';
 import { Stage, Layer, Rect, Text } from 'react-konva';
 import ImageItem from './elements/ImageItem';
 import ShapeItem from './elements/ShapeItem';
 import TransformerComponent from './transformers/TransformerComponent';
+import { Box } from '@mui/material';
+
+const FIXED_WIDTH = 720;
+const FIXED_HEIGHT = 1280;
 
 const StageView = ({
   stageRef,
@@ -16,7 +19,6 @@ const StageView = ({
   setSelectedId,
   deleteSelectedElement,
   onEditTextRequest,
-  stageSize
 }) => {
   const [deleteButtonPos, setDeleteButtonPos] = useState(null);
 
@@ -36,7 +38,7 @@ const StageView = ({
       x: box.x + box.width + offset,
       y: box.y - offset,
     });
-  }, [selectedElement, elements, stageSize, stageRef]);
+  }, [selectedElement, elements]);
 
   const handleTransformEnd = (id) => {
     if (!stageRef.current) return;
@@ -75,67 +77,86 @@ const StageView = ({
   };
 
   return (
-    <Stage
-      ref={stageRef}
-      width={stageSize.width}
-      height={stageSize.height}
-      style={{ border: '1px solid #ddd' }}
-      onMouseDown={(e) => {
-        if (e.target === e.target.getStage()) setSelectedId(null);
-      }}
-      onTouchStart={(e) => {
-        if (e.target === e.target.getStage()) setSelectedId(null);
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#f0f0f0', // Optional background for better contrast
+        border: '2px solid #ccc',
+        boxSizing: 'border-box',
+        padding: 2,
+        overflow: 'hidden',
       }}
     >
-      <Layer>
-        <Rect x={0} y={0} width={stageSize.width} height={stageSize.height} fill="white" listening={false} />
-      </Layer>
+      <Stage
+        ref={stageRef}
+        width={FIXED_WIDTH}
+        height={FIXED_HEIGHT}
+        style={{
+          border: '1px solid #000',
+          backgroundColor: 'white',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+        }}
+        onMouseDown={(e) => {
+          if (e.target === e.target.getStage()) setSelectedId(null);
+        }}
+        onTouchStart={(e) => {
+          if (e.target === e.target.getStage()) setSelectedId(null);
+        }}
+      >
+        <Layer>
+          <Rect x={0} y={0} width={FIXED_WIDTH} height={FIXED_HEIGHT} fill="white" listening={false} />
+        </Layer>
 
-      <Layer>
-        {elements.map((el) => {
-          if (el.type === 'image') {
+        <Layer>
+          {elements.map((el) => {
+            if (el.type === 'image') {
+              return (
+                <ImageItem
+                  key={el.id}
+                  element={el}
+                  onSelect={onSelect}
+                  onTransform={onTransform}
+                  onDragEnd={onDragEnd}
+                  bringToFront={bringToFront}
+                />
+              );
+            }
             return (
-              <ImageItem
+              <ShapeItem
                 key={el.id}
                 element={el}
                 onSelect={onSelect}
                 onTransform={onTransform}
                 onDragEnd={onDragEnd}
                 bringToFront={bringToFront}
+                onEditTextRequest={onEditTextRequest}
               />
             );
-          }
-          return (
-            <ShapeItem
-              key={el.id}
-              element={el}
-              onSelect={onSelect}
-              onTransform={onTransform}
-              onDragEnd={onDragEnd}
-              bringToFront={bringToFront}
-              onEditTextRequest={onEditTextRequest}
-            />
-          );
-        })}
-        <TransformerComponent
-          selectedElement={selectedElement}
-          onTransformEnd={handleTransformEnd}
-          stageRef={stageRef}
-        />
-        {deleteButtonPos && (
-          <Text
-            text="X"
-            fontSize={18}
-            fill="red"
-            x={deleteButtonPos.x}
-            y={deleteButtonPos.y}
-            onClick={deleteSelectedElement}
-            onTap={deleteSelectedElement}
-            style={{ cursor: 'pointer' }}
+          })}
+          <TransformerComponent
+            selectedElement={selectedElement}
+            onTransformEnd={handleTransformEnd}
+            stageRef={stageRef}
           />
-        )}
-      </Layer>
-    </Stage>
+          {deleteButtonPos && (
+            <Text
+              text="X"
+              fontSize={18}
+              fill="red"
+              x={deleteButtonPos.x}
+              y={deleteButtonPos.y}
+              onClick={deleteSelectedElement}
+              onTap={deleteSelectedElement}
+              style={{ cursor: 'pointer' }}
+            />
+          )}
+        </Layer>
+      </Stage>
+    </Box>
   );
 };
 

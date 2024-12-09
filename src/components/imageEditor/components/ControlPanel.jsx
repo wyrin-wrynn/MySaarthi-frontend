@@ -35,8 +35,8 @@ const ControlPanel = ({
     addElement({
       id: `rect-${Date.now()}`,
       type: 'rect',
-      x: Math.random() * (stageSize.width - 100),
-      y: Math.random() * (stageSize.height - 50),
+      x: 20,
+      y: 20,
       width: 100,
       height: 50,
       fill: 'blue',
@@ -50,8 +50,8 @@ const ControlPanel = ({
     addElement({
       id: `circle-${Date.now()}`,
       type: 'circle',
-      x: Math.random() * (stageSize.width - 80),
-      y: Math.random() * (stageSize.height - 80),
+      x: 40,
+      y: 40,
       radius: 40,
       fill: 'green',
       stroke: 'black',
@@ -64,8 +64,8 @@ const ControlPanel = ({
     addElement({
       id: `text-${Date.now()}`,
       type: 'text',
-      x: Math.random() * (stageSize.width - 200),
-      y: Math.random() * (stageSize.height - 50),
+      x: 60,
+      y: 60,
       text: 'Sample Text',
       fontSize: 20,
       fontFamily: 'Calibri',
@@ -84,8 +84,8 @@ const ControlPanel = ({
     addElement({
       id: `image-${Date.now()}`,
       type: 'image',
-      x: Math.random() * (stageSize.width - 200),
-      y: Math.random() * (stageSize.height - 200),
+      x: 100,
+      y: 100,
       src: 'https://konvajs.org/assets/lion.png',
       draggable: true,
       scaleX: 1,
