@@ -12,11 +12,9 @@ import {
   Button,
   Box,
   Typography,
-  TextField,
   Select,
   MenuItem,
   FormControl,
-  InputLabel,
   Checkbox,
   FormControlLabel,
   Slider,
@@ -234,6 +232,23 @@ const ImageEditor = () => {
   const [history, setHistory] = useState([]);
   const [historyStep, setHistoryStep] = useState(-1);
 
+  const [stageSize, setStageSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  // Handle window resize to make Stage responsive
+  useEffect(() => {
+    const handleResize = () => {
+      setStageSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const saveHistory = (newEls) => {
     const last = history[history.length - 1];
     if (last && isArraysEqual(last, newEls)) {
@@ -303,8 +318,8 @@ const ImageEditor = () => {
       {
         id: `rect-${elements.length}`,
         type: 'rect',
-        x: Math.random() * 200,
-        y: Math.random() * 200,
+        x: Math.random() * (stageSize.width - 100),
+        y: Math.random() * (stageSize.height - 50),
         width: 100,
         height: 50,
         fill: 'blue',
@@ -322,8 +337,8 @@ const ImageEditor = () => {
       {
         id: `circle-${elements.length}`,
         type: 'circle',
-        x: Math.random() * 200,
-        y: Math.random() * 200,
+        x: Math.random() * (stageSize.width - 80),
+        y: Math.random() * (stageSize.height - 80),
         radius: 40,
         fill: 'green',
         stroke: 'black',
@@ -340,8 +355,8 @@ const ImageEditor = () => {
       {
         id: `text-${elements.length}`,
         type: 'text',
-        x: Math.random() * 200,
-        y: Math.random() * 200,
+        x: Math.random() * (stageSize.width - 200),
+        y: Math.random() * (stageSize.height - 50),
         text: 'Sample Text',
         fontSize: 20,
         fontFamily: 'Calibri',
@@ -364,8 +379,8 @@ const ImageEditor = () => {
       {
         id: `image-${elements.length}`,
         type: 'image',
-        x: Math.random() * 200,
-        y: Math.random() * 200,
+        x: Math.random() * (stageSize.width - 200),
+        y: Math.random() * (stageSize.height - 200),
         src: 'https://konvajs.org/assets/lion.png', // Ensure this image supports CORS
         draggable: true,
         scaleX: 1,
@@ -496,7 +511,7 @@ const ImageEditor = () => {
       x: box.x + box.width + offset,
       y: box.y - offset,
     });
-  }, [selectedId, elements]);
+  }, [selectedId, elements, stageSize]);
 
   const selectedElement = elements.find((el) => el.id === selectedId);
 
@@ -887,8 +902,8 @@ const ImageEditor = () => {
         <Grid item size={10} sx={{ position: 'relative' }}>
           <Stage
             ref={stageRef}
-            width={window.innerWidth}
-            height={window.innerHeight}
+            width={stageSize.width}
+            height={stageSize.height}
             style={{ border: '1px solid #ddd' }}
             onMouseDown={(e) => {
               if (e.target === e.target.getStage()) {
@@ -901,6 +916,19 @@ const ImageEditor = () => {
               }
             }}
           >
+            {/* Background Layer */}
+            <Layer>
+              <Rect
+                x={0}
+                y={0}
+                width={stageSize.width}
+                height={stageSize.height}
+                fill="white" // Set the background color to white
+                listening={false} // Make sure background is not interactive
+              />
+            </Layer>
+
+            {/* Elements Layer */}
             <Layer>
               {elements.map((el) => {
                 if (el.type === 'image') {
