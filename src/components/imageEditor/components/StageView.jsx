@@ -5,8 +5,8 @@ import ShapeItem from './elements/ShapeItem';
 import TransformerComponent from './transformers/TransformerComponent';
 import { Box } from '@mui/material';
 
-const FIXED_WIDTH = 720;
-const FIXED_HEIGHT = 1280;
+const FIXED_WIDTH = 1280;
+const FIXED_HEIGHT = 720;
 
 const StageView = ({
   stageRef,

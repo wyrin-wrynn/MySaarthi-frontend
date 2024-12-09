@@ -1,9 +1,10 @@
 // components/imageEditor/ImageEditor.jsx
 import React, { useState, useRef, useEffect } from 'react';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 import { useHistory } from './hooks/useHistory';
 import StageView from './components/StageView';
 import ControlPanel from './components/ControlPanel';
+import Paper from '@mui/material/Paper'
 
 const ImageEditor = () => {
   const stageRef = useRef();
@@ -128,8 +129,9 @@ const ImageEditor = () => {
 
   return (
     <>
+    <Paper elevation={0}>
       <Grid container spacing={1}>
-        <Grid item>
+        <Grid item size={2} sx={{border: 1}}>
           <ControlPanel
             selectedElement={selectedElement}
             onTransform={onTransform}
@@ -143,7 +145,7 @@ const ImageEditor = () => {
           />
         </Grid>
 
-        <Grid item xs sx={{ position: 'relative' }}>
+        <Grid item size={10} sx={{ position: 'relative', border: 1 }}>
           <StageView
             stageRef={stageRef}
             elements={elements}
@@ -159,6 +161,7 @@ const ImageEditor = () => {
           />
         </Grid>
       </Grid>
+    </Paper>
 
       {textEditing.isEditing && (
         <input
@@ -181,7 +184,7 @@ const ImageEditor = () => {
           }}
         />
       )}
-    </>
+      </>
   );
 };
 
