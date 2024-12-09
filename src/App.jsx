@@ -5,6 +5,7 @@ import Layout from "./components/layout/Layout";
 import VideoPage from "./pages/VideoPage";
 import HomePage from "./pages/HomePage"; // Import HomePage
 import VideoEditorPage from "./pages/VideoEditorPage";
+import ImageEditorPage from "./pages/ImageEditorPage.jsx"
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route index element={<HomePage />} />
           <Route path="video" element={<VideoPage />} />
           <Route path="video-editor/:id" element={<VideoEditorPage />} />
+          <Route path="image-editor" element={<ImageEditorPage />} />
           <Route path="*" element={<div>Page not found</div>} />
         </Route>
       </Routes>

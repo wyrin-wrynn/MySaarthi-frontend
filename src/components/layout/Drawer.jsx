@@ -65,6 +65,7 @@ const MenuItem = ({to, icon: IconComponent, label}) => {
 const menuItems  = [
   { to: '/', icon: FolderIcon, label: 'Home' },
   { to: '/video', icon: VideoLibraryIcon, label: 'Create Video' },
+  { to: '/image-editor', icon: ImageIcon, label: 'Create Image'}
 ]
 
 const Drawer = ({ open, handleDrawerClose }) => {
