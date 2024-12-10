@@ -1,10 +1,11 @@
-// components/imageEditor/ImageEditor.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import Grid from '@mui/material/Grid2';
+import Paper from '@mui/material/Paper';
 import { useHistory } from './hooks/useHistory';
 import StageView from './components/StageView';
-import ControlPanel from './components/ControlPanel';
-import Paper from '@mui/material/Paper'
+import TopAppBar from './components/controlpanel/TopAppBar';
+import LeftDrawer from './components/controlpanel/LeftDrawer';
+import RightDrawer from './components/controlpanel/RightDrawer';
 
 const ImageEditor = () => {
   const stageRef = useRef();
@@ -12,8 +13,7 @@ const ImageEditor = () => {
   const [elements, setElements, saveHistory, undo, redo, historyStep, history] = useHistory([]);
   const [selectedId, setSelectedId] = useState(null);
   const [stageSize, setStageSize] = useState({ width: window.innerWidth, height: window.innerHeight });
-  
-  // Text editing state
+
   const [textEditing, setTextEditing] = useState({
     isEditing: false,
     elementId: null,
@@ -46,7 +46,6 @@ const ImageEditor = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedId]);
 
-  // Bring element to front
   const bringToFront = (id) => {
     const elIndex = elements.findIndex((el) => el.id === id);
     if (elIndex === -1) return;
@@ -57,7 +56,6 @@ const ImageEditor = () => {
     saveHistory(newEls);
   };
 
-  // CRUD for elements
   const addElement = (newElement) => {
     saveHistory([...elements, newElement]);
   };
@@ -129,40 +127,52 @@ const ImageEditor = () => {
 
   return (
     <>
-    <Paper elevation={0}>
-      <Grid container spacing={1}>
-        <Grid item size={2} sx={{border: 1}}>
-          <ControlPanel
-            selectedElement={selectedElement}
-            onTransform={onTransform}
-            undo={undo}
-            redo={redo}
-            historyStep={historyStep}
-            historyLength={history.length}
-            addElement={addElement}
-            handleSaveAsJPG={handleSaveAsJPG}
-            stageSize={stageSize}
-          />
+      <Paper elevation={0}>
+        <Grid container spacing={1}>
+          {/* Left Drawer */}
+          <Grid item size={2} sx={{ border: 1 }}>
+            <LeftDrawer addElement={addElement} />
+          </Grid>
+  
+          {/* Middle Section: TopAppBar + Stage */}
+          <Grid item size={8} container direction="column" sx={{ border: 1 }}>
+            {/* Top AppBar */}
+            <Grid item sx={{ border: 1 }}>
+              <TopAppBar
+                undo={undo}
+                redo={redo}
+                handleSaveAsJPG={handleSaveAsJPG}
+                historyStep={historyStep}
+                historyLength={history.length}
+              />
+            </Grid>
+  
+            {/* Stage View */}
+            <Grid item  sx={{ border: 1 }}>
+              <StageView
+                stageRef={stageRef}
+                elements={elements}
+                onSelect={onSelect}
+                onDragEnd={onDragEnd}
+                onTransform={onTransform}
+                bringToFront={bringToFront}
+                selectedElement={selectedElement}
+                setSelectedId={setSelectedId}
+                deleteSelectedElement={deleteSelectedElement}
+                onEditTextRequest={onEditTextRequest}
+                stageSize={stageSize}
+              />
+            </Grid>
+          </Grid>
+  
+          {/* Right Drawer */}
+          <Grid item size={2} sx={{ border: 1 }}>
+            <RightDrawer selectedElement={selectedElement} onTransform={onTransform} />
+          </Grid>
         </Grid>
-
-        <Grid item size={10} sx={{ position: 'relative', border: 1 }}>
-          <StageView
-            stageRef={stageRef}
-            elements={elements}
-            onSelect={onSelect}
-            onDragEnd={onDragEnd}
-            onTransform={onTransform}
-            bringToFront={bringToFront}
-            selectedElement={selectedElement}
-            setSelectedId={setSelectedId}
-            deleteSelectedElement={deleteSelectedElement}
-            onEditTextRequest={onEditTextRequest}
-            stageSize={stageSize}
-          />
-        </Grid>
-      </Grid>
-    </Paper>
-
+      </Paper>
+  
+      {/* Text Editing Input */}
       {textEditing.isEditing && (
         <input
           ref={textInputRef}
@@ -184,8 +194,9 @@ const ImageEditor = () => {
           }}
         />
       )}
-      </>
+    </>
   );
+  
 };
 
 export default ImageEditor;
