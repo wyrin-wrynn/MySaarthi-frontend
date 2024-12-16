@@ -10,4 +10,7 @@ export default defineConfig({
   build: {
     sourcemap: true, // Enable or adjust as needed
   },
+  define: {
+    global: 'window', // Polyfill global for fbjs and Draft.js
+  },
 });

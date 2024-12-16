@@ -12,6 +12,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import FolderIcon from "@mui/icons-material/Folder";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
+import YouTubeIcon from '@mui/icons-material/YouTube'; 
 import ImageIcon from "@mui/icons-material/ImageAspectRatio"
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -65,7 +66,8 @@ const MenuItem = ({to, icon: IconComponent, label}) => {
 const menuItems  = [
   { to: '/', icon: FolderIcon, label: 'Home' },
   { to: '/video', icon: VideoLibraryIcon, label: 'Create Video' },
-  { to: '/image-editor', icon: ImageIcon, label: 'Create Image'}
+  { to: '/image-editor', icon: ImageIcon, label: 'Create Image'},
+  { to: '/video-summarize', icon: YouTubeIcon, label: 'Summarize Video'}
 ]
 
 const Drawer = ({ open, handleDrawerClose }) => {

@@ -1,8 +1,7 @@
-// components/imageEditor/components/ActionCard.jsx
 import React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent, Typography, Box } from '@mui/material';
 
-const ActionCard = ({ title, onAction }) => {
+const ActionCard = ({ title, imageSrc, onAction }) => {
   // Handler for key down events
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -24,20 +23,61 @@ const ActionCard = ({ title, onAction }) => {
           boxShadow: 6,
         },
         userSelect: 'none',
-        outline: 'none', // Remove default outline
+        outline: 'none',
         '&:focus': {
           boxShadow: 8,
-          border: '2px solid #1976d2', // Highlight on focus
+          border: '2px solid #1976d2',
         },
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '50px', // Adjust height as needed
+        flexDirection: 'column',
+        height: '100px', // Fixed height
+        width: '100px', // Fixed width
+        textAlign: 'center',
       }}
       role="button"
       tabIndex={0}
     >
-      <Typography variant="h6" component="div" align="center">
+      <Box
+        sx={{
+          height: '50px', // Image container height
+          width: '50px', // Image container width
+          marginBottom: 1,
+        }}
+      >
+        {imageSrc ? (
+          <img
+            src={imageSrc}
+            alt={title}
+            style={{
+              maxHeight: '100%',
+              maxWidth: '100%',
+              objectFit: 'contain',
+            }}
+          />
+        ) : (
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              fontSize: '14px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+            }}
+          >
+            {title}
+          </Typography>
+        )}
+      </Box>
+      <Typography
+        variant="body2"
+        component="div"
+        align="center"
+        sx={{ fontSize: '12px', wordWrap: 'break-word' }}
+      >
         {title}
       </Typography>
     </Card>
